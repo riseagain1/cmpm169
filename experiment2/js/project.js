@@ -1,34 +1,42 @@
-// project.js - purpose and description here
-// Author: Your Name
-// Date:
+let zoom = 10; 
+let maxZoom = 50; 
+let lastMouseX = 0; 
+let lastMouseY = 0;
+let colorValue = 0; 
+let rectWidth = zoom; 
 
-// NOTE: This is how we might start a basic JavaaScript OOP project
-
-// Constants - User-servicable parts
-// In a longer project I like to put these in a separate file
-
-// define a class
-class MyProjectClass {
-  // constructor function
-  constructor(param1, param2) {
-    // set properties using 'this' keyword
-    this.property1 = param1;
-    this.property2 = param2;
-  }
-  
-  // define a method
-  myMethod() {
-    // code to run when method is called
-  }
+function setup() {
+  createCanvas(1000, 1000);
+  rectMode(CENTER);
+  noStroke();
+  lastMouseX = mouseX; 
+  lastMouseY = mouseY; 
 }
 
-function main() {
-  // create an instance of the class
-  let myInstance = new MyProjectClass(value1, value2);
+function draw() {
+  background(255);
+  if (mouseY < lastMouseY) {
+    zoom = min(zoom + 0.5, maxZoom);
+    colorValue = min(colorValue + 1, 255); 
+  } else if (mouseY > lastMouseY) {
+    zoom = max(zoom - 0.5, 10);
+    colorValue = max(colorValue - 1, 0); 
+  }
+  if (mouseX > lastMouseX) {
+    rectWidth = max(rectWidth - 1, 1);
+  } else if (mouseX < lastMouseX) {
+    rectWidth = min(rectWidth + 1, zoom);
+  }
 
-  // call a method on the instance
-  myInstance.myMethod();
+  for (let i = 0; i < width; i += zoom) {
+    for (let j = 0; j < height; j += zoom) {
+      let c = color(colorValue, 0, 255 - colorValue); 
+      fill(c);
+      let xOffset = random(-2, 2);
+      let yOffset = random(-2, 2);
+      rect(i + xOffset, j + yOffset, rectWidth, zoom);
+    }
+  }
+  lastMouseX = mouseX;
+  lastMouseY = mouseY;
 }
-
-// let's get this party started - uncomment me
-//main();
