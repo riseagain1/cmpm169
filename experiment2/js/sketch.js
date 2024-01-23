@@ -40,4 +40,4 @@ function draw() {
   lastMouseY = mouseY;
 }
 
-//Attribution: This program is partially written by ChatGPT.
+//Attribution: This program is partially written by ChatGPT4.
