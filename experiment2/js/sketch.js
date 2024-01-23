@@ -27,7 +27,6 @@ function draw() {
   } else if (mouseX < lastMouseX) {
     rectWidth = min(rectWidth + 1, zoom);
   }
-
   for (let i = 0; i < width; i += zoom) {
     for (let j = 0; j < height; j += zoom) {
       let c = color(colorValue, 0, 255 - colorValue); 
