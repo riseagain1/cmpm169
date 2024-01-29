@@ -1,26 +1,50 @@
-let rectangles = [];
-let numRectangles = 5; // Total number of rectangles
-
-function preload() {
-  // Load images for some rectangles
-  for (let i = 0; i < numRectangles / 2; i++) {
-    let img = loadImage('image' + i + '.png'); // Load your images
-    rectangles.push(new SpinningRectangle(width / (numRectangles + 1) * (i + 1), height / 2, 100, 100, img));
-  }
-}
+let particles = [];
 
 function setup() {
-  createCanvas(800, 600);
-  // Create additional rectangles with static designs
-  for (let i = Math.floor(numRectangles / 2); i < numRectangles; i++) {
-    rectangles.push(new SpinningRectangle(width / (numRectangles + 1) * (i + 1), height / 2, 100, 100));
-  }
+  createCanvas(400, 400);
+  background(255);
 }
 
 function draw() {
-  background(255);
-  for (let rect of rectangles) {
-    rect.update();
-    rect.display();
+  fill(255, 25);  
+  rect(0, 0, width, height);
+  particles.push(new Particle(width / 2, height / 2));
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    let p = particles[i];
+    p.update();
+    p.display();
+    if (p.isOffScreen()) {
+      particles.splice(i, 1);
+    }
+  }
+}
+
+class Particle {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D();
+    this.color = color(0, 0, 0, 150); 
+    this.angle = random(TWO_PI);
+    this.size = random(2, 5); 
+  }
+
+  update() {
+    this.pos.add(this.vel);
+    this.angle += 0.05; 
+  }
+
+  display() {
+    push();
+    translate(this.pos.x, this.pos.y);
+    rotate(this.angle);
+    stroke(this.color);
+    strokeWeight(this.size); 
+    point(0, 0);
+    pop();
+  }
+
+  isOffScreen() {
+    return (this.pos.x < 0 || this.pos.x > width || this.pos.y < 0 || this.pos.y > height);
   }
 }
