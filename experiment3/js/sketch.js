@@ -30,7 +30,6 @@ class Particle {
   }
 
   update() {
-    // Using noise for more organic movement
     let noiseX = noise(this.noiseOffset, frameCount * 0.01);
     let noiseY = noise(this.noiseOffset + 1000, frameCount * 0.01); 
     this.vel.x = map(noiseX, 0, 1, -2, 2); 
