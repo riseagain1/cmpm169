@@ -29,7 +29,6 @@ class Particle {
   }
 
   update() {
-    // Bounce off the edges
     if (this.pos.x <= 0 || this.pos.x >= width) {
       this.vel.x *= -1;
     }
