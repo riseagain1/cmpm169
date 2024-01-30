@@ -14,24 +14,43 @@ function draw() {
     let p = particles[i];
     p.update();
     p.display();
-    if (p.isOffScreen()) {
-      particles.splice(i, 1);
-    }
   }
 }
+
 
 class Particle {
   constructor(x, y) {
     this.pos = createVector(x, y);
     this.vel = p5.Vector.random2D();
-    this.color = color(0, 0, 0, 150); 
+    this.color = color(0, 0, 0, 150);
     this.angle = random(TWO_PI);
-    this.size = random(2, 5); 
+    this.size = random(2, 5);
+    this.edgeDistance = 100; // Distance from edge to start applying force
   }
 
   update() {
+    // Bounce off the edges
+    if (this.pos.x <= 0 || this.pos.x >= width) {
+      this.vel.x *= -1;
+    }
+    if (this.pos.y <= 0 || this.pos.y >= height) {
+      this.vel.y *= -1;
+    }
+
+    let edgeLeft = this.pos.x < this.edgeDistance;
+    let edgeRight = this.pos.x > width - this.edgeDistance;
+    let edgeTop = this.pos.y < this.edgeDistance;
+    let edgeBottom = this.pos.y > height - this.edgeDistance;
+
+    if (edgeLeft || edgeRight || edgeTop || edgeBottom) {
+      let force = p5.Vector.sub(this.pos, createVector(width / 2, height / 2));
+      force.rotate(HALF_PI); // Rotate the force vector by 90 degrees
+      force.setMag(0.2); // Adjust the magnitude of the force
+      this.vel.add(force); // Apply the rotational force directly to velocity
+    }
+
     this.pos.add(this.vel);
-    this.angle += 0.05; 
+    this.angle += 0.05;
   }
 
   display() {
@@ -39,12 +58,8 @@ class Particle {
     translate(this.pos.x, this.pos.y);
     rotate(this.angle);
     stroke(this.color);
-    strokeWeight(this.size); 
+    strokeWeight(this.size);
     point(0, 0);
     pop();
-  }
-
-  isOffScreen() {
-    return (this.pos.x < 0 || this.pos.x > width || this.pos.y < 0 || this.pos.y > height);
   }
 }
