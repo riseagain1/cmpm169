@@ -44,9 +44,9 @@ class Particle {
 
     if (edgeLeft || edgeRight || edgeTop || edgeBottom) {
       let force = p5.Vector.sub(this.pos, createVector(width / 2, height / 2));
-      force.rotate(HALF_PI); // Rotate the force vector by 90 degrees
-      force.setMag(0.2); // Adjust the magnitude of the force
-      this.vel.add(force); // Apply the rotational force directly to velocity
+      force.rotate(HALF_PI); 
+      force.setMag(0.2); 
+      this.vel.add(force); 
     }
 
     this.pos.add(this.vel);
@@ -63,3 +63,6 @@ class Particle {
     pop();
   }
 }
+
+
+//Attribution: This code is partially created by ChatGPT
