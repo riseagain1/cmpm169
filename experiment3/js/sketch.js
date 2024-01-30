@@ -25,10 +25,16 @@ class Particle {
     this.color = color(0, 0, 0, 150);
     this.angle = random(TWO_PI);
     this.size = random(2, 5);
-    this.edgeDistance = 100; // Distance from edge to start applying force
+    this.edgeDistance = 50; 
+    this.noiseOffset = random(1000); 
   }
 
   update() {
+    // Using noise for more organic movement
+    let noiseX = noise(this.noiseOffset, frameCount * 0.01);
+    let noiseY = noise(this.noiseOffset + 1000, frameCount * 0.01); 
+    this.vel.x = map(noiseX, 0, 1, -2, 2); 
+    this.vel.y = map(noiseY, 0, 1, -2, 2);
     if (this.pos.x <= 0 || this.pos.x >= width) {
       this.vel.x *= -1;
     }
@@ -49,7 +55,7 @@ class Particle {
     }
 
     this.pos.add(this.vel);
-    this.angle += 0.05;
+    this.angle += map(noise(this.noiseOffset, frameCount * 0.01), 0, 1, -0.1, 0.1);
   }
 
   display() {
@@ -62,6 +68,3 @@ class Particle {
     pop();
   }
 }
-
-
-//Attribution: This code is partially created by ChatGPT
