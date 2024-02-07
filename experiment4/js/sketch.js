@@ -6,7 +6,7 @@ let currentPitchY = null;
 let skyImage;
 
 function preload() {
-  skyImage = loadImage('../image/sky.png');
+  skyImage = loadImage('../img/sky.png');
 }
 
 function setup() {
