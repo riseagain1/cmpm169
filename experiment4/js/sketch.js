@@ -43,8 +43,8 @@ function displayStartScreen() {
 }
 
 function keyPressed() {
-  userStartAudio();
   if (key === ' ' && gameState !== 'playing') {
+    userStartAudio();
     gameState = 'playing';
     bird.reset();
     birdPath = [];
