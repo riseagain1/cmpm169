@@ -18,10 +18,10 @@ function setup() {
   osc = new p5.Oscillator('sine');
   osc.start();
   osc.amp(0); 
-
   env = new p5.Envelope();
   env.setADSR(0.1, 0.2, 0.5, 1); 
   env.setRange(0.8, 0); 
+}
 
 function draw() {
   background(skyImage);
@@ -111,6 +111,7 @@ function playSoundBasedOnPath() {
       let freq = map(pos.y, 0, height, 100, 1000); 
       osc.freq(freq);
       env.triggerAttack(osc, 0); 
+      
       setTimeout(() => {
         env.triggerRelease(osc); 
       }, 100); 
@@ -122,14 +123,14 @@ function playSoundBasedOnPath() {
   setTimeout(() => {
     gameState = 'start';
     birdPath = [];
-    currentPitchY = null; 
+    currentPitchY = null;
   }, birdPath.length * 300 + 1000); 
 }
 
 
 function displayPitchIndicator() {
   if (currentPitchY !== null) {
-    stroke(0, 0, 0); // Red line for the pitch indicator
+    stroke(255, 0, 0); 
     line(0, currentPitchY, width, currentPitchY);
   }
 }
