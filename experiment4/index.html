@@ -7,10 +7,17 @@
     <link rel="stylesheet" type="text/css" href="../css/site.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-    
-    <!-- Corrected: Only include p5.js and p5.sound libraries once -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"></script>
+    <script>
+      document.getElementById('startButton').addEventListener('click', function() {
+        userStartAudio().then(() => {
+          console.log('Audio context started');
+          // Optionally hide the start button after activation
+          // this.style.display = 'none';
+        }).catch(err => console.error(err));
+      });
+    </script>
 </head>
 <body>
     <main id="content">
