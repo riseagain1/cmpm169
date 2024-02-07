@@ -43,15 +43,22 @@ function displayStartScreen() {
 }
 
 function keyPressed() {
-  userStartAudio();
   if (key === ' ' && gameState !== 'playing') {
-    gameState = 'playing';
-    bird.reset();
-    birdPath = [];
+    getAudioContext().resume().then(() => {
+      console.log('Audio context resumed');
+      startGame();
+    });
   } else if (gameState === 'playing') {
     bird.flap();
   }
 }
+
+function startGame() {
+  gameState = 'playing';
+  bird.reset();
+  birdPath = [];
+}
+
 
 class Bird {
   constructor() {
