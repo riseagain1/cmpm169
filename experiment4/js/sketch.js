@@ -143,3 +143,8 @@ function displayPitchIndicator() {
     line(0, currentPitchY, width, currentPitchY);
   }
 }
+
+
+
+
+//Attribution: Code above are partially created by ChatGPT
