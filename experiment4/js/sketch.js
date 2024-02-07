@@ -3,7 +3,7 @@ let gameState = 'start';
 let birdPath = [];
 let osc, env; 
 let currentPitchY = null; 
-let skyImage, birdImage;
+let skyImage;
 
 function preload() {
   skyImage = loadImage('image/sky.png');
@@ -106,26 +106,27 @@ function drawTrail() {
 }
 
 function playSoundBasedOnPath() {
-  birdPath.forEach((pos, index) => {
-    setTimeout(() => {
-      let freq = map(pos.y, 0, height, 100, 1000); 
-      osc.freq(freq);
-      env.triggerAttack(osc, 0); 
-      
+    birdPath.forEach((pos, index) => {
       setTimeout(() => {
-        env.triggerRelease(osc); 
-      }, 100); 
-
-      currentPitchY = pos.y; 
-    }, index * 300); 
-  });
-
-  setTimeout(() => {
-    gameState = 'start';
-    birdPath = [];
-    currentPitchY = null;
-  }, birdPath.length * 300 + 1000); 
-}
+        let freq = map(pos.y, 0, height, 100, 1000);
+        osc.freq(freq);
+        env.triggerAttack(); // Corrected
+        
+        setTimeout(() => {
+          env.triggerRelease(); // Corrected
+        }, 100);
+  
+        currentPitchY = pos.y;
+      }, index * 300);
+    });
+  
+    setTimeout(() => {
+      gameState = 'start';
+      birdPath = [];
+      currentPitchY = null;
+    }, birdPath.length * 300 + 1000);
+  }
+  
 
 
 function displayPitchIndicator() {
