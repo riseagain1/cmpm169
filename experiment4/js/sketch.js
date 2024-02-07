@@ -43,6 +43,7 @@ function displayStartScreen() {
 }
 
 function keyPressed() {
+  userStartAudio();
   if (key === ' ' && gameState !== 'playing') {
     gameState = 'playing';
     bird.reset();
@@ -110,10 +111,10 @@ function playSoundBasedOnPath() {
       setTimeout(() => {
         let freq = map(pos.y, 0, height, 100, 1000);
         osc.freq(freq);
-        env.triggerAttack(); // Corrected
+        env.triggerAttack(); 
         
         setTimeout(() => {
-          env.triggerRelease(); // Corrected
+          env.triggerRelease(); 
         }, 100);
   
         currentPitchY = pos.y;
