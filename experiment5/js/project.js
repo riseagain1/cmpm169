@@ -12,18 +12,25 @@ function setup() {
 
 function draw() {
   background(220);
+  
   ambientLight(60);
   const lx = map(mouseX, 0, width, -1, 1);
   const ly = map(mouseY, 0, height, -1, 1);
   directionalLight(255, 255, 255, lx, ly, -0.5);
   push(); 
+  translate(-width / 2, -height / 2, -500); 
+  imageMode(CORNER); 
+  image(bgImage, 0, 0, width, height);
+  pop(); 
+  push();
   rotateY(frameCount * 0.01);
   rotateX(frameCount * 0.01);
-  texture(checkerboard); 
+  texture(checkerboard);
   box(100);
-  pop(); 
+  pop();
   drawShadow(lx, ly);
 }
+
 
 function drawShadow(lx, ly) {
   push();
