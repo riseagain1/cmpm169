@@ -1,67 +1,71 @@
-// sketch.js - purpose and description here
-// Author: Your Name
-// Date:
+let customFont;
+let particles = [];
+let word = "FOG";
+let fontSize = 100;
+let mouseProximityThreshold = 150; // How close the mouse needs to be to trigger the effect
+let wordPosition;
+let particleLimit = 1000; // Limit the total number of particles to control performance
+let particleGenerationRate = 10; // How many particles to generate per frame when the mouse is close
 
-// Here is how you might set up an OOP p5.js project
-// Note that p5.js looks for a file called sketch.js
-
-// Constants - User-servicable parts
-// In a longer project I like to put these in a separate file
-const VALUE1 = 1;
-const VALUE2 = 2;
-
-// Globals
-let myInstance;
-let canvasContainer;
-
-class MyClass {
-    constructor(param1, param2) {
-        this.property1 = param1;
-        this.property2 = param2;
-    }
-
-    myMethod() {
-        // code to run when method is called
-    }
+function preload() {
+  customFont = loadFont('Anta-Regular.ttf');
 }
 
-// setup() function is called once when the program starts
 function setup() {
-    // place our canvas, making it fit our container
-    canvasContainer = $("#canvas-container");
-    let canvas = createCanvas(canvasContainer.width(), canvasContainer.height());
-    canvas.parent("canvas-container");
-    // resize canvas is the page is resized
-    $(window).resize(function() {
-        console.log("Resizing...");
-        resizeCanvas(canvasContainer.width(), canvasContainer.height());
-    });
-    // create an instance of the class
-    myInstance = new MyClass(VALUE1, VALUE2);
-
-    var centerHorz = windowWidth / 2;
-    var centerVert = windowHeight / 2;
+  createCanvas(windowWidth, windowHeight);
+  textFont(customFont);
+  textSize(fontSize);
+  textAlign(CENTER, CENTER);
+  wordPosition = createVector(width / 2, height / 2); // Position the word in the center
 }
 
-// draw() function is called repeatedly, it's the main animation loop
 function draw() {
-    background(220);    
-    // call a method on the instance
-    myInstance.myMethod();
+  background(0);
 
-    // Put drawings here
-    var centerHorz = canvasContainer.width() / 2 - 125;
-    var centerVert = canvasContainer.height() / 2 - 125;
-    fill(234, 31, 81);
-    noStroke();
-    rect(centerHorz, centerVert, 250, 250);
+  let mousePosition = createVector(mouseX, mouseY);
+  if (mousePosition.dist(wordPosition) < mouseProximityThreshold && particles.length < particleLimit) {
+    for (let i = 0; i < particleGenerationRate; i++) {
+      particles.push(new Particle(wordPosition.x + random(-50, 50), wordPosition.y + random(-50, 50)));
+    }
+  }
+
+  // Efficiently update and display particles
+  particles = particles.filter(particle => {
+    particle.update();
+    particle.show();
+    return !particle.isFinished();
+  });
+
+  // Display the word conditionally
+  if (particles.length < 500) {
     fill(255);
-    textStyle(BOLD);
-    textSize(140);
-    text("p5*", centerHorz + 10, centerVert + 200);
+    noStroke();
+    text(word, wordPosition.x, wordPosition.y);
+  }
 }
 
-// mousePressed() function is called once after every time a mouse button is pressed
-function mousePressed() {
-    // code to run when mouse is pressed
+class Particle {
+  constructor(x, y) {
+    this.position = createVector(x, y);
+    this.velocity = p5.Vector.random2D();
+    this.velocity.setMag(random(1, 5));
+    this.acceleration = createVector(0, 0);
+    this.lifespan = 255;
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.lifespan -= 5;
+  }
+
+  show() {
+    noStroke();
+    fill(255, this.lifespan);
+    ellipse(this.position.x, this.position.y, 4);
+  }
+
+  isFinished() {
+    return this.lifespan < 0;
+  }
 }
